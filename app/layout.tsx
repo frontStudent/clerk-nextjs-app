@@ -2,6 +2,7 @@ import {
   ClerkProvider,
   OrganizationSwitcher,
   SignedIn,
+  SignedOut,
   UserButton,
 } from "@clerk/nextjs";
 import "./globals.css";
@@ -67,6 +68,12 @@ export default function RootLayout({
               />
             </Link>
             <div className="grow" />
+            <Link
+              href="/templates"
+              className="flex items-center h-20 gap-2 sm:gap-4"
+            >
+              Templates
+            </Link>
             <SignedIn>
               <div className="hidden sm:block">
                 <OrganizationSwitcher afterCreateOrganizationUrl="/dashboard" />
@@ -85,6 +92,11 @@ export default function RootLayout({
               </div>
               <UserButton afterSignOutUrl="/" />
             </SignedIn>
+            <SignedOut>
+              <Link href="/dashboard" className="hidden sm:block">
+                Sign In
+              </Link>
+            </SignedOut>
           </header>
           <main className="grow">{children}</main>
           <footer className="flex items-center h-20 gap-1 px-8 font-medium border-t md:px-20">
