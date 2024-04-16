@@ -2,58 +2,72 @@ const { db } = require('@vercel/postgres');
 
 // const bcrypt = require('bcrypt');
 
-const revenue = [
-  { month: "Jan", revenue: 2000 },
-  { month: "Feb", revenue: 1800 },
-  { month: "Mar", revenue: 2200 },
-  { month: "Apr", revenue: 2500 },
-  { month: "May", revenue: 2300 },
-  { month: "Jun", revenue: 3200 },
-  { month: "Jul", revenue: 3500 },
-  { month: "Aug", revenue: 3700 },
-  { month: "Sep", revenue: 2500 },
-  { month: "Oct", revenue: 2800 },
-  { month: "Nov", revenue: 3000 },
-  { month: "Dec", revenue: 4800 },
+const articles = [
+  { title: "Example1", content: "this is an article" },
+  { title: "Example2", content: "this is an article too" },
 ];
-async function seedRevenue(client) {
+async function seedArticle(client) {
   try {
-    // Create the "revenue" table if it doesn't exist
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    // Create the "article" table if it doesn't exist
     const createTable = await client.sql`
-      CREATE TABLE IF NOT EXISTS revenue (
-        month VARCHAR(4) NOT NULL UNIQUE,
-        revenue INT NOT NULL
+      CREATE TABLE IF NOT EXISTS article (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        content VARCHAR(255) NOT NULL,
+        starNum INT DEFAULT 0
       );
     `;
 
-    console.log(`Created "revenue" table`);
+    console.log(`Created "article" table`);
 
-    // Insert data into the "revenue" table
-    const insertedRevenue = await Promise.all(
-      revenue.map(
+    // Insert data into the "article" table
+    const insertedArticle = await Promise.all(
+      articles.map(
         (rev) => client.sql`
-        INSERT INTO revenue (month, revenue)
-        VALUES (${rev.month}, ${rev.revenue})
-        ON CONFLICT (month) DO NOTHING;
-      `,
-      ),
+        INSERT INTO article (title, content)
+        VALUES (${rev.title}, ${rev.content})
+      `
+      )
     );
 
-    console.log(`Seeded ${insertedRevenue.length} revenue`);
+    console.log(`Seeded ${insertedArticle.length} article`);
 
     return {
       createTable,
-      revenue: insertedRevenue,
+      article: insertedArticle,
     };
   } catch (error) {
-    console.error('Error seeding revenue:', error);
+    console.error("Error seeding article:", error);
+    throw error;
+  }
+}
+
+async function createFavorite(client) {
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    // Create the "article" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS favorite (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        userId VARCHAR(255) NOT NULL,
+        articleId VARCHAR(255) NOT NULL
+      );
+    `;
+    console.log(`created favorite`);
+    return {
+      createTable
+    };
+  } catch (error) {
+    console.error("Error create favorite:", error);
     throw error;
   }
 }
 
 async function main() {
   const client = await db.connect();
-  await seedRevenue(client);
+  await seedArticle(client);
+  await createFavorite(client);
 
   await client.end();
 }

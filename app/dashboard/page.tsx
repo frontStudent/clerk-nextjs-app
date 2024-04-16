@@ -4,6 +4,7 @@ import { OrgDetails, SessionDetails, UserDetails } from "./details";
 import Link from "next/link";
 
 export default async function DashboardPage() {
+
   const { userId } = auth();
 
   if (!userId) {
