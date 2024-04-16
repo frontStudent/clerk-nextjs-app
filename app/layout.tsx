@@ -14,16 +14,16 @@ import Script from "next/script";
 import { Docs, Github, Times } from "./icons";
 import { Twitter } from "./icons";
 import { Discord } from "./icons";
-import { Metadata } from "next";
+// import { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Next.js Clerk Template",
-  description:
-    "A simple and powerful Next.js template featuring authentication and user management powered by Clerk.",
-  openGraph: { images: ["/og.png"] },
-};
+// export const metadata: Metadata = {
+//   title: "Next.js Clerk Template",
+//   description:
+//     "A simple and powerful Next.js template featuring authentication and user management powered by Clerk.",
+//   openGraph: { images: ["/og.png"] },
+// };
  
 const CustomPage = () => {
   return (
