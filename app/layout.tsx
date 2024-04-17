@@ -96,6 +96,12 @@ export default function RootLayout({
             >
               Templates
             </Link>
+            <Link
+              href="/workspace"
+              className="flex items-center h-20 gap-2 sm:gap-4"
+            >
+              Workspace
+            </Link>
             <SignedIn>
               <div className="hidden sm:block">
                 <OrganizationSwitcher afterCreateOrganizationUrl="/dashboard" />
