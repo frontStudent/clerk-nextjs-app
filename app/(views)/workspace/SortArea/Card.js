@@ -4,7 +4,7 @@ import React, { useRef, useMemo } from "react";
 import { Space } from "antd";
 import { useDrop } from "react-dnd";
 import styled from "styled-components";
-import { MenuOutlined } from "@ant-design/icons";
+import DehazeIcon from "@mui/icons-material/Dehaze";
 
 import { Rnd } from "react-rnd";
 import { Resizable } from "react-resizable";
@@ -70,7 +70,7 @@ const Card = ({ id, childList, updateCard, width, height, onResize }) => {
     >
       <Wrap ref={ref} key={id} width={width} height={height}>
         <IconWrap>
-          <MenuOutlined className="handle" />
+          <DehazeIcon className="handle" />
         </IconWrap>
         {childList?.map((child) => (
           <Rnd

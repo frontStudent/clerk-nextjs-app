@@ -8,8 +8,8 @@ import "./resize.css";
 
 const BasicFunction = () => {
   const [cards, setCards] = useState([
-    { id: 1, title: "shrek", height: 100, width: 250, childList: [] },
-    { id: 2, title: "fiona", height: 100, width: 250, childList: [] },
+    { id: 1, title: "shrek", height: 100, width: 550, childList: [] },
+    { id: 2, title: "fiona", height: 100, width: 550, childList: [] },
   ]);
 
   const updateCard = useCallback(
