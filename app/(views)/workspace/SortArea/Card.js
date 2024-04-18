@@ -37,10 +37,10 @@ const IconWrap = styled(Space)`
 const Card = ({ id, childList, updateCard, width, height, onResize }) => {
   const minHeight = useMemo(() => {
     const list = childList.map((child) =>
-        child?.lastInfo
-          ? child?.lastInfo.top + child?.lastInfo.height
-          : child?.top + child?.height
-      )
+      child?.lastInfo
+        ? child?.lastInfo.top + child?.lastInfo.height
+        : child?.initInfo?.top + child?.initInfo?.height
+    );
     return Math.max(...list);
   }, [childList]);
   const ref = useRef();
@@ -53,7 +53,7 @@ const Card = ({ id, childList, updateCard, width, height, onResize }) => {
         const dropOffset = ref.current.getBoundingClientRect();
         const left = clientOffset.x - dropOffset.x;
         const top = clientOffset.y - dropOffset.y;
-        const newItem = { ...item, left, top };
+        const newItem = { ...item, initInfo: {left, top} };
         updateCard(id, newItem, "add");
       },
     }),
@@ -74,7 +74,7 @@ const Card = ({ id, childList, updateCard, width, height, onResize }) => {
         </IconWrap>
         {childList?.map((child) => (
           <Rnd
-            default={{ x: child?.left, y: child?.top }}
+            default={{ x: child?.initInfo?.left, y: child?.initInfo?.top }}
             key={child?.id}
             onDragStop={(e, d) => {
               const rectInfo = e.target.getBoundingClientRect();
@@ -91,7 +91,7 @@ const Card = ({ id, childList, updateCard, width, height, onResize }) => {
                 height: ref.offsetHeight - 1,
                 width: ref.offsetWidth,
                 left: position.x,
-                top: position.y -1,
+                top: position.y - 1,
               };
               updateCard(id, { ...child, lastInfo }, "update");
             }}

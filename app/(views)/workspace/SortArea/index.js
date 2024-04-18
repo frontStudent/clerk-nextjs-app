@@ -46,7 +46,6 @@ const BasicFunction = () => {
     [cards, setCards]
   );
   const handleResize = (id, size) => {
-    console.log(size.height, "size.height");
     setCards((prev) =>
       prev.map((i) => (i.id === id ? { ...i, height: size.height } : i))
     );
