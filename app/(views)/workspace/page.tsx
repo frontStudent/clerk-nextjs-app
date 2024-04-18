@@ -3,6 +3,7 @@ import { createContext, useState } from "react";
 
 import SortArea from "./SortArea";
 import DragArea from "./Source/DragArea";
+import Setting from './Setting/main'
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -38,7 +39,9 @@ const Workspace = () => {
             </div>
           </div>
         </DndProvider>
-        <div className="w-1/5 h-full">11</div>
+        <div className="w-1/5 h-full">
+          <Setting />
+        </div>
       </StoreCtx.Provider>
     </div>
   );
