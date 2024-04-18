@@ -1,18 +1,12 @@
 import DragBox from "./DragBox.js";
 const boxes = [
-  { id: "1", title: "Drag me around" },
-  { id: "2", title: "Drag me too" },
+  { id: "1", title: "Rich Text" },
+  { id: "2", title: "Not determined yet" },
 ];
 
 const DragArea = () => {
   return (
-    <div
-      style={{
-        width: "300px",
-        height: "150px",
-        border: "1px solid black",
-      }}
-    >
+    <div className="flex flex-col gap-4 p-4">
       {boxes.map(({ id, title }) => {
         return <DragBox key={id} id={id} title={title}></DragBox>;
       })}

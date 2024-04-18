@@ -1,6 +1,5 @@
 import { useDrag } from "react-dnd";
-import { ItemTypes } from "./ItemTypes.js";
-import { StyledBox } from "./StyledBox.js";
+import { ItemTypes } from "./ItemTypes";
 
 const DragBox = ({ id, title }) => {
   const [, drag] = useDrag(
@@ -13,10 +12,6 @@ const DragBox = ({ id, title }) => {
     }),
     [id]
   );
-  return (
-    <StyledBox ref={drag}>
-      {title}
-    </StyledBox>
-  );
+  return <div className="bg-white rounded-sm shadow-md cursor-move text-center p-4" ref={drag}>{title}</div>;
 };
 export default DragBox;
