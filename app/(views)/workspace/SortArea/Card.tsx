@@ -11,7 +11,7 @@ import { Resizable } from "react-resizable";
 import "./resize.css";
 import { StoreCtx } from "../context";
 
-import { DragBox, Box, SectionProps } from "../types";
+import { DragItem, Box, SectionProps } from "../types";
 import { ItemTypes } from "../Dnd/ItemTypes";
 
 const Wrap = styled.div`
@@ -47,12 +47,15 @@ const Card = ({ item, updateCard, onResize }: SectionProps) => {
   const [, drop] = useDrop(
     () => ({
       accept: [ItemTypes.BOX],
-      drop(item: DragBox, monitor) {
+      drop(item: DragItem, monitor) {
         const clientOffset = monitor.getSourceClientOffset() as XYCoord;
         const dropOffset = ref.current?.getBoundingClientRect() as DOMRect;
         const left = clientOffset.x - dropOffset.x;
         const top = clientOffset.y - dropOffset.y;
-        const newItem = { ...item, initInfo: { left, top, width: 150, height: 50 } };
+        const newItem = {
+          ...item,
+          initInfo: { left, top, width: 150, height: 50 },
+        };
         updateCard(id, newItem, "add");
       },
     }),

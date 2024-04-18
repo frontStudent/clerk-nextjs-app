@@ -1,6 +1,6 @@
-export type DragBox = {
+export type DragItem = {
   id: string;
-  title: string;
+  content: string;
   width?: number;
   height?: number;
 };

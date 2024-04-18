@@ -5,15 +5,29 @@ import { ReactSortable } from "react-sortablejs";
 
 import Card from "./Card";
 import "./resize.css";
-
+import { Section, SectionUpdateHelper, ResizeHelper } from "../types";
 const BasicFunction = () => {
 
-  const [cards, setCards] = useState([
-    { id: 1, title: "shrek", height: 100, width: 550, childList: [] },
-    { id: 2, title: "fiona", height: 100, width: 550, childList: [] },
+  const [cards, setCards] = useState<Section[]>([
+    {
+      id: "1",
+      title: "shrek",
+      titleStyle: "shrek",
+      height: 100,
+      width: 550,
+      childList: [],
+    },
+    {
+      id: "2",
+      title: "fiona",
+      titleStyle: "shrek",
+      height: 100,
+      width: 550,
+      childList: [],
+    },
   ]);
 
-  const updateCard = useCallback(
+  const updateCard: SectionUpdateHelper = useCallback(
     (id, item, op) => {
       if (op === "add") {
         setCards((prevCards) =>
@@ -23,7 +37,7 @@ const BasicFunction = () => {
                   ...card,
                   childList: [
                     ...card.childList,
-                    { ...item, id: new Date().getTime() },
+                    { ...item, id: new Date().getTime().toString() },
                   ],
                 }
               : card;
@@ -46,7 +60,7 @@ const BasicFunction = () => {
     },
     [cards, setCards]
   );
-  const handleResize = (id, size) => {
+  const handleResize: ResizeHelper = (id, size) => {
     setCards((prev) =>
       prev.map((i) => (i.id === id ? { ...i, height: size.height } : i))
     );
@@ -63,10 +77,6 @@ const BasicFunction = () => {
         <Card
           key={item.id}
           item={item}
-          id={item.id}
-          width={item?.width}
-          height={item?.height}
-          childList={item?.childList}
           updateCard={updateCard}
           onResize={handleResize}
         />
