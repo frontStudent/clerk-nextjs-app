@@ -3,7 +3,7 @@
 import { useOrganization, useSession, useUser } from "@clerk/nextjs";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
-import { CopyIcon, Dot } from "../icons";
+import { CopyIcon, Dot } from "@/app/icons";
 import Image from "next/image";
 import "./prism.css";
 
