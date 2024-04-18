@@ -10,7 +10,7 @@ import { Rnd } from "react-rnd";
 import { Resizable } from "react-resizable";
 import "./resize.css";
 
-import { StoreCtx } from "../page";
+import { StoreCtx } from "../context";
 const ItemTypes = {
   CARD: "card",
   BOX: "box",
@@ -22,8 +22,10 @@ const Wrap = styled.div`
   margin-bottom: 10px;
   height: ${(props) => props.height + "px"};
   width: ${(props) => props.width + "px"};
+  border: ${(props) =>
+    props.isSelect ? "1px solid rgba(2,119,251,1)" : "1px solid transparent"};
+  background: ${(props) => (props.isSelect ? "#F2F8FE" : "")};
   display: block;
-  border: 1px solid #ccc;
 `;
 
 const IconWrap = styled(Space)`
@@ -76,9 +78,10 @@ const Card = ({ item, id, childList, updateCard, width, height, onResize }) => {
         key={id}
         width={width}
         height={height}
+        isSelect={state.selectField?.id === id}
         onClick={() => {
           console.log(item, "item");
-          onChangeState({selectField: item});
+          onChangeState({ selectField: item });
         }}
       >
         <IconWrap>

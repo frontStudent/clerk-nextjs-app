@@ -7,8 +7,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 import { SelectedField } from "./types";
-
-export const StoreCtx = createContext({});
+import {StoreCtx} from './context'
 
 const Workspace = () => {
   const [state, setState] = useState({
