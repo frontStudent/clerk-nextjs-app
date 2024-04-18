@@ -4,15 +4,17 @@ import React, { useRef, useMemo, useContext, SyntheticEvent } from "react";
 import { Space } from "antd";
 import { useDrop, XYCoord } from "react-dnd";
 import styled from "styled-components";
-import DehazeIcon from "@mui/icons-material/Dehaze";
-
+import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
+import AddIcon from "@mui/icons-material/Add";
 import { Rnd } from "react-rnd";
 import { Resizable } from "react-resizable";
 import "./resize.css";
 import { StoreCtx } from "../context";
 
 import { DragItem, Box, SectionProps } from "../types";
-import { ItemTypes } from "../Dnd/ItemTypes";
+import { ItemTypes } from "../Source/ItemTypes";
+import RecTitle from "./RecTitle";
 
 const Wrap = styled.div`
   position: relative;
@@ -25,11 +27,10 @@ const IconWrap = styled(Space)`
   right: 5px;
   top: 5px;
   display: flex;
-  cursor: move;
   font-size: 16px;
 `;
 
-const Card = ({ item, updateCard, onResize }: SectionProps) => {
+const Card = ({ item, onMutateBox, onMutateSection, onResize }: SectionProps) => {
   const { id, width, height, childList } = item;
 
   const { state, onChangeState } = useContext(StoreCtx);
@@ -56,7 +57,7 @@ const Card = ({ item, updateCard, onResize }: SectionProps) => {
           ...item,
           initInfo: { left, top, width: 150, height: 50 },
         };
-        updateCard(id, newItem, "add");
+        onMutateBox(id, newItem, "add");
       },
     }),
     []
@@ -89,9 +90,22 @@ const Card = ({ item, updateCard, onResize }: SectionProps) => {
           onChangeState({ selectField: item });
         }}
       >
-        <IconWrap>
-          <DehazeIcon className="handle" />
-        </IconWrap>
+        <RecTitle modTitleSize="16px" colorList={["#f4f7f6", "#4a8bd6"]}>
+          模块名称
+        </RecTitle>
+        {state.selectField?.id === id && (
+          <IconWrap>
+            <AddIcon
+              className="hover:cursor-pointer"
+              onClick={() => onMutateSection(id, "add")}
+            />
+            <MenuIcon className="handle hover:cursor-move" />
+            <CloseIcon
+              className="hover:cursor-pointer"
+              onClick={() => onMutateSection(id, "delete")}
+            />
+          </IconWrap>
+        )}
         {childList?.map((child: Box) => (
           <Rnd
             default={{
@@ -111,7 +125,7 @@ const Card = ({ item, updateCard, onResize }: SectionProps) => {
                 left: d.x,
                 top: d.y - 1,
               };
-              updateCard(id, { ...child, lastInfo }, "update");
+              onMutateBox(id, { ...child, lastInfo }, "update");
             }}
             onResizeStop={(e, direction, ref, delta, position) => {
               const lastInfo = {
@@ -120,7 +134,7 @@ const Card = ({ item, updateCard, onResize }: SectionProps) => {
                 left: position.x,
                 top: position.y - 1,
               };
-              updateCard(id, { ...child, lastInfo }, "update");
+              onMutateBox(id, { ...child, lastInfo }, "update");
             }}
             bounds={"parent"}
             style={{

@@ -32,9 +32,14 @@ export type Section = {
 
 export type SelectedField = Section | Box | {};
 
-export type SectionUpdateHelper = (
-  id: string,
+export type BoxMutateHelper = (
+  id: string, // box所在section的id，并非box的id
   newItem: Box,
+  op: "add" | "update" | "delete"
+) => void;
+
+export type SectionMutateHelper = (
+  id: string,
   op: "add" | "update" | "delete"
 ) => void;
 
@@ -45,6 +50,7 @@ export type ResizeHelper = (
 
 export type SectionProps = {
   item: Section;
-  updateCard: SectionUpdateHelper;
+  onMutateBox: BoxMutateHelper;
+  onMutateSection: SectionMutateHelper;
   onResize: ResizeHelper;
 };

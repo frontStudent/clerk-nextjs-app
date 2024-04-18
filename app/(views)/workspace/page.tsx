@@ -2,7 +2,7 @@
 import { createContext, useState } from "react";
 
 import SortArea from "./SortArea";
-import DragArea from "./Dnd/DragArea";
+import DragArea from "./Source/DragArea";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -24,7 +24,7 @@ const Workspace = () => {
       }));
     },
   };
-  
+
   return (
     <div className="flex w-full h-[800px]">
       <StoreCtx.Provider value={store}>
