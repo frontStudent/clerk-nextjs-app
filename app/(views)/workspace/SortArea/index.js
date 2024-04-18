@@ -7,6 +7,7 @@ import Card from "./Card";
 import "./resize.css";
 
 const BasicFunction = () => {
+
   const [cards, setCards] = useState([
     { id: 1, title: "shrek", height: 100, width: 550, childList: [] },
     { id: 2, title: "fiona", height: 100, width: 550, childList: [] },
@@ -61,6 +62,7 @@ const BasicFunction = () => {
       {cards.map((item) => (
         <Card
           key={item.id}
+          item={item}
           id={item.id}
           width={item?.width}
           height={item?.height}

@@ -31,6 +31,8 @@ export type Section = {
   height: number;
 };
 
+export type SelectedField = Section | Box | {};
+
 export type SectionUpdateProps = {
     id: string;
     newItem: Box;

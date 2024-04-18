@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import React, { useRef, useMemo } from "react";
+import React, { useRef, useMemo, useContext } from "react";
 import { Space } from "antd";
 import { useDrop } from "react-dnd";
 import styled from "styled-components";
@@ -10,6 +10,7 @@ import { Rnd } from "react-rnd";
 import { Resizable } from "react-resizable";
 import "./resize.css";
 
+import { StoreCtx } from "../page";
 const ItemTypes = {
   CARD: "card",
   BOX: "box",
@@ -34,7 +35,9 @@ const IconWrap = styled(Space)`
   font-size: 16px;
 `;
 
-const Card = ({ id, childList, updateCard, width, height, onResize }) => {
+const Card = ({ item, id, childList, updateCard, width, height, onResize }) => {
+  const { state, onChangeState } = useContext(StoreCtx);
+  console.log(state, "state");
   const minHeight = useMemo(() => {
     const list = childList.map((child) =>
       child?.lastInfo
@@ -53,7 +56,7 @@ const Card = ({ id, childList, updateCard, width, height, onResize }) => {
         const dropOffset = ref.current.getBoundingClientRect();
         const left = clientOffset.x - dropOffset.x;
         const top = clientOffset.y - dropOffset.y;
-        const newItem = { ...item, initInfo: {left, top} };
+        const newItem = { ...item, initInfo: { left, top } };
         updateCard(id, newItem, "add");
       },
     }),
@@ -68,7 +71,16 @@ const Card = ({ id, childList, updateCard, width, height, onResize }) => {
       handle={<span className="react-resizable-handle" />}
       minConstraints={[100, minHeight]}
     >
-      <Wrap ref={ref} key={id} width={width} height={height}>
+      <Wrap
+        ref={ref}
+        key={id}
+        width={width}
+        height={height}
+        onClick={() => {
+          console.log(item, "item");
+          onChangeState({selectField: item});
+        }}
+      >
         <IconWrap>
           <DehazeIcon className="handle" />
         </IconWrap>
