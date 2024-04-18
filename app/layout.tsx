@@ -94,7 +94,13 @@ export default function RootLayout({
               href="/templates"
               className="flex items-center h-20 gap-2 sm:gap-4"
             >
-              Templates
+              templates
+            </Link>
+            <Link
+              href="/workspace"
+              className="flex items-center h-20 gap-2 sm:gap-4"
+            >
+              workspace
             </Link>
             <SignedIn>
               <div className="hidden sm:block">
@@ -129,7 +135,7 @@ export default function RootLayout({
               </Link>
             </SignedOut>
           </header>
-          <main className="grow">{children}</main>
+          <main className="grow h-full">{children}</main>
           <footer className="flex items-center h-20 gap-1 px-8 font-medium border-t md:px-20">
             <Image
               src="/clerk.svg"

@@ -1,15 +1,25 @@
-import SortList from './SortList'
-
-const BasicFunction = () => {
-
+'use client'
+import SortArea from "./SortArea";
+import DragArea from './Dnd/DragArea'
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+const Workspace = () => {
   return (
-    <div>
-      <div className="px-8 py-12 sm:py-16 md:px-20">
-        <h1 className="text-3xl font-bold">workspace test</h1>
-      </div>
-      <SortList />
+    <div className="flex w-full h-[500px] overflow-scroll">
+      <DndProvider backend={HTML5Backend}>
+        <div className="w-1/5 h-full">
+          <DragArea />
+        </div>
+        <div className="flex-1 h-full bg-slate-100 min-w-[460px]">
+          <div className="bg-white mx-8 p-8 h-full">
+            <SortArea />
+          </div>
+        </div>
+      </DndProvider>
+
+      <div className="w-1/5 h-full">11</div>
     </div>
   );
 };
 
-export default BasicFunction;
+export default Workspace;
