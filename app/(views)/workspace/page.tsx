@@ -7,7 +7,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 import { SelectedField } from "./types";
-import {StoreCtx} from './context'
+import { StoreCtx } from "./context";
 
 const Workspace = () => {
   const [state, setState] = useState({
@@ -17,13 +17,14 @@ const Workspace = () => {
   const store = {
     state,
     onChangeState: (selectField: SelectedField) => {
-      console.log("selectField", selectField)
+      console.log("selectField", selectField);
       setState((preState) => ({
         ...preState,
         ...selectField,
       }));
     },
   };
+  
   return (
     <div className="flex w-full h-[800px]">
       <StoreCtx.Provider value={store}>

@@ -1,25 +1,24 @@
-export type BoxBaseInfo = {
-  top: number;
-  left: number;
+export type DragBox = {
+  id: string;
+  title: string;
   width?: number;
   height?: number;
 };
 
-export type TextBox = {
-  id: string;
-  content: string;
-  initInfo: BoxBaseInfo;
-  lastInfo: BoxBaseInfo;
+export type BoxBaseInfo = {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
 };
 
-export type ImageBox = {
+export type Box = {
   id: string;
-  src: string;
+  content?: string;
+  src?: string;
   initInfo: BoxBaseInfo;
-  lastInfo: BoxBaseInfo;
+  lastInfo?: BoxBaseInfo;
 };
-
-export type Box = TextBox | ImageBox;
 
 // 简历模块
 export type Section = {
@@ -33,8 +32,19 @@ export type Section = {
 
 export type SelectedField = Section | Box | {};
 
-export type SectionUpdateProps = {
-    id: string;
-    newItem: Box;
-    op: 'add' | 'update' | 'delete';
-}
+export type SectionUpdateHelper = (
+  id: string,
+  newItem: Box,
+  op: "add" | "update" | "delete"
+) => void;
+
+export type ResizeHelper = (
+  id: string,
+  size: { width: number; height: number }
+) => void;
+
+export type SectionProps = {
+  item: Section;
+  updateCard: SectionUpdateHelper;
+  onResize: ResizeHelper;
+};

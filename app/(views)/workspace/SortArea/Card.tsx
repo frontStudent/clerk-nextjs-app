@@ -1,30 +1,22 @@
 "use client";
 
-import React, { useRef, useMemo, useContext } from "react";
+import React, { useRef, useMemo, useContext, SyntheticEvent } from "react";
 import { Space } from "antd";
-import { useDrop } from "react-dnd";
+import { useDrop, XYCoord } from "react-dnd";
 import styled from "styled-components";
 import DehazeIcon from "@mui/icons-material/Dehaze";
 
 import { Rnd } from "react-rnd";
 import { Resizable } from "react-resizable";
 import "./resize.css";
-
 import { StoreCtx } from "../context";
-const ItemTypes = {
-  CARD: "card",
-  BOX: "box",
-  MOVE_BOX: "move-box",
-};
+
+import { DragBox, Box, SectionProps } from "../types";
+import { ItemTypes } from "../Dnd/ItemTypes";
 
 const Wrap = styled.div`
   position: relative;
   margin-bottom: 10px;
-  height: ${(props) => props.height + "px"};
-  width: ${(props) => props.width + "px"};
-  border: ${(props) =>
-    props.isSelect ? "1px solid rgba(2,119,251,1)" : "1px solid transparent"};
-  background: ${(props) => (props.isSelect ? "#F2F8FE" : "")};
   display: block;
 `;
 
@@ -37,34 +29,37 @@ const IconWrap = styled(Space)`
   font-size: 16px;
 `;
 
-const Card = ({ item, id, childList, updateCard, width, height, onResize }) => {
+const Card = ({ item, updateCard, onResize }: SectionProps) => {
+  const { id, width, height, childList } = item;
+
   const { state, onChangeState } = useContext(StoreCtx);
   console.log(state, "state");
   const minHeight = useMemo(() => {
-    const list = childList.map((child) =>
-      child?.lastInfo
-        ? child?.lastInfo.top + child?.lastInfo.height
-        : child?.initInfo?.top + child?.initInfo?.height
+    const list = childList.map((child: Box) =>
+      child.lastInfo
+        ? child.lastInfo.top + child.lastInfo.height
+        : child.initInfo.top + child.initInfo.height
     );
     return Math.max(...list);
   }, [childList]);
-  const ref = useRef();
+  const ref = useRef<HTMLDivElement>(null);
 
   const [, drop] = useDrop(
     () => ({
       accept: [ItemTypes.BOX],
-      drop(item, monitor) {
-        const clientOffset = monitor.getSourceClientOffset();
-        const dropOffset = ref.current.getBoundingClientRect();
+      drop(item: DragBox, monitor) {
+        const clientOffset = monitor.getSourceClientOffset() as XYCoord;
+        const dropOffset = ref.current?.getBoundingClientRect() as DOMRect;
         const left = clientOffset.x - dropOffset.x;
         const top = clientOffset.y - dropOffset.y;
-        const newItem = { ...item, initInfo: { left, top } };
+        const newItem = { ...item, initInfo: { left, top, width: 150, height: 50 } };
         updateCard(id, newItem, "add");
       },
     }),
     []
   );
   drop(ref);
+
   return (
     <Resizable
       width={width}
@@ -76,9 +71,16 @@ const Card = ({ item, id, childList, updateCard, width, height, onResize }) => {
       <Wrap
         ref={ref}
         key={id}
-        width={width}
-        height={height}
-        isSelect={state.selectField?.id === id}
+        style={{
+          width: `${width}px`,
+          height: `${height}px`,
+          border: `${
+            state.selectField?.id === id
+              ? "1px solid rgba(2,119,251,1)"
+              : "1px solid transparent"
+          }`,
+          background: `${state.selectField?.id === id ? "#F2F8FE" : ""}`,
+        }}
         onClick={() => {
           console.log(item, "item");
           onChangeState({ selectField: item });
@@ -87,12 +89,19 @@ const Card = ({ item, id, childList, updateCard, width, height, onResize }) => {
         <IconWrap>
           <DehazeIcon className="handle" />
         </IconWrap>
-        {childList?.map((child) => (
+        {childList?.map((child: Box) => (
           <Rnd
-            default={{ x: child?.initInfo?.left, y: child?.initInfo?.top }}
+            default={{
+              x: child?.initInfo?.left,
+              y: child?.initInfo?.top,
+              width: child?.initInfo?.width,
+              height: child?.initInfo?.height,
+            }}
             key={child?.id}
             onDragStop={(e, d) => {
-              const rectInfo = e.target.getBoundingClientRect();
+              const rectInfo = (
+                e.target as HTMLElement
+              ).getBoundingClientRect();
               const lastInfo = {
                 height: rectInfo.height - 1,
                 width: rectInfo.width,
@@ -116,11 +125,9 @@ const Card = ({ item, id, childList, updateCard, width, height, onResize }) => {
               lineHeight: "30px",
               textAlign: "center",
               cursor: "move",
-              width: "150px",
-              height: "30px",
             }}
           >
-            {child?.title}
+            {child.content}
           </Rnd>
         ))}
       </Wrap>
