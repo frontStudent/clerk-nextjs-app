@@ -1,36 +1,48 @@
-import React, { useState, useEffect, useCallback, useMemo, useContext } from 'react'
-import { Dropdown } from 'antd'
-import isHotkey from 'is-hotkey'
-import { Editable, withReact, useSlate, Slate } from 'slate-react'
-import { Editor, Transforms, createEditor, Text, Element as SlateElement } from 'slate'
-import { withHistory } from 'slate-history'
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useContext,
+} from "react";
+import { Dropdown } from "antd";
+import isHotkey from "is-hotkey";
+import { Editable, withReact, useSlate, Slate } from "slate-react";
+import {
+  Editor,
+  Transforms,
+  createEditor,
+  Text,
+  Element as SlateElement,
+} from "slate";
+import { withHistory } from "slate-history";
 
-import { ToolButton, Icon, Toolbar } from './components'
-import escapeHtml from 'escape-html'
+import { ToolButton, Icon, Toolbar } from "./components";
+import escapeHtml from "escape-html";
 
 const HOTKEYS = {
-  'mod+b': 'bold',
-  'mod+i': 'italic',
-  'mod+u': 'underline',
-  'mod+`': 'code'
-}
+  "mod+b": "bold",
+  "mod+i": "italic",
+  "mod+u": "underline",
+  "mod+`": "code",
+};
 
-const LIST_TYPES = ['numbered-list', 'bulleted-list']
-const TEXT_ALIGN_TYPES = ['left', 'center', 'right', 'justify']
+const LIST_TYPES = ["numbered-list", "bulleted-list"];
+const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"];
 const items = [
   {
-    label: '1st menu item',
-    key: '1'
+    label: "1st menu item",
+    key: "1",
   },
   {
-    label: '2nd menu item',
-    key: '2'
+    label: "2nd menu item",
+    key: "2",
   },
   {
-    label: '3rd menu item',
-    key: '3'
-  }
-]
+    label: "3rd menu item",
+    key: "3",
+  },
+];
 const RichTextExample = ({ initialValue, onUpdate }) => {
   const renderElement = (props) => <Element {...props} />;
   const renderLeaf = (props) => <Leaf {...props} />;
@@ -53,8 +65,12 @@ const RichTextExample = ({ initialValue, onUpdate }) => {
 
   const handleChange = (val) => {
     //  onChangeParams({ richSourceData: val })
-    onUpdate(val)
-    // setHtml(val.map((item) => serialize(item)).join(''))
+    console.log(val, "val 11111111111111");
+    onUpdate(val);
+    console.log(
+      val.map((item) => serialize(item)).join(""),
+      "val ============="
+    );
   };
   return (
     <Slate editor={editor} initialValue={initialValue} onChange={handleChange}>
@@ -100,49 +116,53 @@ const RichTextExample = ({ initialValue, onUpdate }) => {
 };
 export const serialize = (node) => {
   if (Text.isText(node)) {
-    let string = escapeHtml(node.text)
+    let string = escapeHtml(node.text);
     if (node.bold) {
-      string = `<strong>${string}</strong>`
+      string = `<strong>${string}</strong>`;
     }
     if (node.italic) {
-      string = `<em>${string}</em>`
+      string = `<em>${string}</em>`;
     }
     if (node.code) {
-      string = `<code>${string}</code>`
+      string = `<code>${string}</code>`;
     }
     if (node.underline) {
-      string = `<u>${string}</u>`
+      string = `<u>${string}</u>`;
     }
-    return string
+    return string;
   }
 
-  const children = node?.children?.map((n) => serialize(n)).join('')
+  const children = node?.children?.map((n) => serialize(n)).join("");
 
   switch (node.type) {
-    case 'paragraph':
-      return `<div style="text-align: ${node.align}">${children}</div>`
-    case 'heading-one':
-      return `<h1 style="text-align: ${node.align}">${children}</h1>`
-    case 'heading-two':
-      return `<h2 style="text-align: ${node.align}">${children}</h2>`
-    case 'bulleted-list':
-      return `<ul style="text-align: ${node.align}">${children}</ul>`
-    case 'list-item':
-      return `<li style="text-align: ${node.align}">${children}</li>`
-    case 'numbered-list':
-      return `<ol style="text-align: ${node.align}">${children}</ol>`
+    case "paragraph":
+      return `<div style="text-align: ${node.align}">${children}</div>`;
+    case "heading-one":
+      return `<h1 style="text-align: ${node.align}">${children}</h1>`;
+    case "heading-two":
+      return `<h2 style="text-align: ${node.align}">${children}</h2>`;
+    case "bulleted-list":
+      return `<div style="margin: 1px 40px 1px">
+      <ul style="text-align: ${node.align}; list-style-type: circle">${children}</ul>
+      </div>`;
+    case "list-item":
+      return `<li style="text-align: ${node.align}">${children}</li>`;
+    case "numbered-list":
+      return `
+      <div style="margin: 1px 40px 1px">
+      <ol style="text-align: ${node.align}; list-style-type: desc">${children}</ol></div>`;
     default:
-      return children
+      return children;
   }
-}
+};
 
 const toggleBlock = (editor, format) => {
   const isActive = isBlockActive(
     editor,
     format,
-    TEXT_ALIGN_TYPES.includes(format) ? 'align' : 'type'
-  )
-  const isList = LIST_TYPES.includes(format)
+    TEXT_ALIGN_TYPES.includes(format) ? "align" : "type"
+  );
+  const isList = LIST_TYPES.includes(format);
 
   Transforms.unwrapNodes(editor, {
     match: (n) =>
@@ -150,135 +170,146 @@ const toggleBlock = (editor, format) => {
       SlateElement.isElement(n) &&
       LIST_TYPES.includes(n.type) &&
       !TEXT_ALIGN_TYPES.includes(format),
-    split: true
-  })
-  let newProperties
+    split: true,
+  });
+  let newProperties;
   if (TEXT_ALIGN_TYPES.includes(format)) {
     newProperties = {
-      align: isActive ? undefined : format
-    }
+      align: isActive ? undefined : format,
+    };
   } else {
     newProperties = {
-      type: isActive ? 'paragraph' : isList ? 'list-item' : format
-    }
+      type: isActive ? "paragraph" : isList ? "list-item" : format,
+    };
   }
-  Transforms.setNodes(editor, newProperties)
+  Transforms.setNodes(editor, newProperties);
 
   if (!isActive && isList) {
-    const block = { type: format, children: [] }
-    Transforms.wrapNodes(editor, block)
+    const block = { type: format, children: [] };
+    Transforms.wrapNodes(editor, block);
   }
-}
+};
 
 const toggleMark = (editor, format) => {
-  const isActive = isMarkActive(editor, format)
+  const isActive = isMarkActive(editor, format);
 
   if (isActive) {
-    Editor.removeMark(editor, format)
+    Editor.removeMark(editor, format);
   } else {
-    Editor.addMark(editor, format, true)
+    Editor.addMark(editor, format, true);
   }
-}
+};
 
-const isBlockActive = (editor, format, blockType = 'type') => {
-  const { selection } = editor
-  if (!selection) return false
+const isBlockActive = (editor, format, blockType = "type") => {
+  const { selection } = editor;
+  if (!selection) return false;
 
   const [match] = Array.from(
     Editor.nodes(editor, {
       at: Editor.unhangRange(editor, selection),
-      match: (n) => !Editor.isEditor(n) && SlateElement.isElement(n) && n[blockType] === format
+      match: (n) =>
+        !Editor.isEditor(n) &&
+        SlateElement.isElement(n) &&
+        n[blockType] === format,
     })
-  )
+  );
 
-  return !!match
-}
+  return !!match;
+};
 
 const isMarkActive = (editor, format) => {
-  const marks = Editor.marks(editor)
-  return marks ? marks[format] === true : false
-}
+  const marks = Editor.marks(editor);
+  return marks ? marks[format] === true : false;
+};
 
 const Element = ({ attributes, children, element }) => {
-  const style = { textAlign: element.align }
+  const style = { textAlign: element.align };
   switch (element.type) {
-    case 'block-quote':
+    case "block-quote":
       return (
         <blockquote style={style} {...attributes}>
           {children}
         </blockquote>
-      )
-    case 'bulleted-list':
+      );
+    case "bulleted-list":
       return (
-        <ul style={style} {...attributes}>
-          {children}
-        </ul>
-      )
-    case 'heading-one':
+        <div style={{ margin: "1px 40px 1px" }}>
+          <ul style={{ ...style, listStyleType: "circle" }} {...attributes}>
+            {children}
+          </ul>
+        </div>
+      );
+    case "heading-one":
       return (
         <h1 style={style} {...attributes}>
           {children}
         </h1>
-      )
-    case 'heading-two':
+      );
+    case "heading-two":
       return (
         <h2 style={style} {...attributes}>
           {children}
         </h2>
-      )
-    case 'list-item':
+      );
+    case "list-item":
       return (
         <li style={style} {...attributes}>
           {children}
         </li>
-      )
-    case 'numbered-list':
+      );
+    case "numbered-list":
       return (
-        <ol style={style} {...attributes}>
-          {children}
-        </ol>
-      )
+        <div style={{ margin: "1px 40px 1px" }}>
+          <ol style={{ ...style, listStyleType: "desc" }} {...attributes}>
+            {children}
+          </ol>
+        </div>
+      );
     default:
       return (
         <p style={style} {...attributes}>
           {children}
         </p>
-      )
+      );
   }
-}
+};
 
 const Leaf = ({ attributes, children, leaf }) => {
   if (leaf.bold) {
-    children = <strong>{children}</strong>
+    children = <strong>{children}</strong>;
   }
 
   if (leaf.code) {
-    children = <code>{children}</code>
+    children = <code>{children}</code>;
   }
 
   if (leaf.italic) {
-    children = <em>{children}</em>
+    children = <em>{children}</em>;
   }
 
   if (leaf.underline) {
-    children = <u>{children}</u>
+    children = <u>{children}</u>;
   }
 
-  return <span {...attributes}>{children}</span>
-}
+  return <span {...attributes}>{children}</span>;
+};
 
 const MenuButton = ({ format, icon }) => {
-  const editor = useSlate()
+  const editor = useSlate();
   return (
     <Dropdown
       menu={{
         items,
-        onClick: (item) => console.log(item, 'change')
+        onClick: (item) => console.log(item, "change"),
       }}
-      trigger={['contextMenu']}
+      trigger={["contextMenu"]}
     >
       <ToolButton
-        active={isBlockActive(editor, format, TEXT_ALIGN_TYPES.includes(format) ? 'align' : 'type')}
+        active={isBlockActive(
+          editor,
+          format,
+          TEXT_ALIGN_TYPES.includes(format) ? "align" : "type"
+        )}
         // onMouseDown={(event) => {
         //   event.preventDefault();
         //   toggleBlock(editor, format);
@@ -287,36 +318,40 @@ const MenuButton = ({ format, icon }) => {
         <Icon>{icon}</Icon>
       </ToolButton>
     </Dropdown>
-  )
-}
+  );
+};
 
 const BlockButton = ({ format, icon }) => {
-  const editor = useSlate()
+  const editor = useSlate();
   return (
     <ToolButton
-      active={isBlockActive(editor, format, TEXT_ALIGN_TYPES.includes(format) ? 'align' : 'type')}
+      active={isBlockActive(
+        editor,
+        format,
+        TEXT_ALIGN_TYPES.includes(format) ? "align" : "type"
+      )}
       onMouseDown={(event) => {
-        event.preventDefault()
-        toggleBlock(editor, format)
+        event.preventDefault();
+        toggleBlock(editor, format);
       }}
     >
       <Icon>{icon}</Icon>
     </ToolButton>
-  )
-}
+  );
+};
 
 const MarkButton = ({ format, icon }) => {
-  const editor = useSlate()
+  const editor = useSlate();
   return (
     <ToolButton
       active={isMarkActive(editor, format)}
       onMouseDown={(event) => {
-        event.preventDefault()
-        toggleMark(editor, format)
+        event.preventDefault();
+        toggleMark(editor, format);
       }}
     >
       <Icon>{icon}</Icon>
     </ToolButton>
-  )
-}
-export default RichTextExample
+  );
+};
+export default RichTextExample;

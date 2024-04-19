@@ -6,6 +6,7 @@ import RichTextExample from "./RichEditor";
 const Text = () => {
   const { state, onChangeState } = useContext(StoreCtx);
   const initialValue = state.selectField.content;
+  console.log(initialValue, 'initialValue')
   const handleUpdateBoxContent = (val: string) => {
     const newSections = state.sections.map((sec) =>
       sec.childList.find((box) => box.id === state.selectField.id)
@@ -17,7 +18,7 @@ const Text = () => {
           }
         : sec
     );
-    onChangeState({ ...state, sections: newSections });
+    onChangeState({ sections: newSections });
   };
   return (
     <div>

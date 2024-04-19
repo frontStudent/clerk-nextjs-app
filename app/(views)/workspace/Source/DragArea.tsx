@@ -8,7 +8,7 @@ const boxes = [
     content: [
       {
         type: "paragraph",
-        align: "center",
+        align: "left",
         children: [{ text: "Hello11" }],
       },
     ],
@@ -20,7 +20,7 @@ const boxes = [
     content: [
       {
         type: "paragraph",
-        align: "center",
+        align: "left",
         children: [{ text: "Hello22" }],
       },
     ],

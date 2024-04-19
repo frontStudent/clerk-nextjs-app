@@ -166,7 +166,6 @@ const Card = ({ item, onMutateBox, onMutateSection, onResize }: SectionProps) =>
                   .join(""),
               }}
             ></div>
-            {}
           </Rnd>
         ))}
       </Wrap>
