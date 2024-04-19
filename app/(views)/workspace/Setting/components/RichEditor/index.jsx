@@ -17,7 +17,7 @@ import {
 } from "slate";
 import { withHistory } from "slate-history";
 
-import { ToolButton, Icon, Toolbar } from "./components";
+import { ToolButton,Icon, Toolbar } from "./components";
 import escapeHtml from "escape-html";
 
 const HOTKEYS = {
@@ -74,24 +74,24 @@ const RichTextExample = ({ initialValue, onUpdate }) => {
   };
   return (
     <Slate editor={editor} initialValue={initialValue} onChange={handleChange}>
-      <link
+      {/* <link
         href="https://fonts.googleapis.com/icon?family=Material+Icons"
         rel="stylesheet"
-      ></link>
+      ></link> */}
       <Toolbar>
-        <MarkButton format="bold" icon="format_bold" />
-        <MarkButton format="italic" icon="format_italic" />
-        <MarkButton format="underline" icon="format_underlined" />
-        <MarkButton format="code" icon="code" />
-        <BlockButton format="heading-one" icon="looks_one" />
-        <BlockButton format="heading-two" icon="looks_two" />
-        <BlockButton format="block-quote" icon="format_quote" />
-        <BlockButton format="numbered-list" icon="format_list_numbered" />
-        <BlockButton format="bulleted-list" icon="format_list_bulleted" />
-        <BlockButton format="left" icon="format_align_left" />
-        <BlockButton format="center" icon="format_align_center" />
-        <BlockButton format="right" icon="format_align_right" />
-        <BlockButton format="justify" icon="format_align_justify" />
+        <MarkButton format="bold" icon="bold" />
+        <MarkButton format="italic" icon="italic" />
+        <MarkButton format="underline" icon="underlined" />
+        {/* <MarkButton format="code" icon="code" /> */}
+        {/* <BlockButton format="heading-one" icon="looks_one" />
+        <BlockButton format="heading-two" icon="looks_two" /> */}
+        {/* <BlockButton format="block-quote" icon="format_quote" /> */}
+        <BlockButton format="numbered-list" icon="list_numbered" />
+        <BlockButton format="bulleted-list" icon="list_bulleted" />
+        <BlockButton format="left" icon="align_left" />
+        <BlockButton format="center" icon="align_center" />
+        <BlockButton format="right" icon="align_right" />
+        <BlockButton format="justify" icon="align_justify" />
         <MenuButton format="" icon="menu" />
       </Toolbar>
       <Editable
@@ -100,6 +100,7 @@ const RichTextExample = ({ initialValue, onUpdate }) => {
         placeholder="Enter some rich text…"
         spellCheck
         autoFocus
+        style={{outline: 'none'}}
         onKeyDown={(event) => {
           for (const hotkey in HOTKEYS) {
             if (isHotkey(hotkey, event)) {
@@ -315,7 +316,7 @@ const MenuButton = ({ format, icon }) => {
         //   toggleBlock(editor, format);
         // }}
       >
-        <Icon>{icon}</Icon>
+        <Icon icon={icon} />
       </ToolButton>
     </Dropdown>
   );
@@ -335,7 +336,7 @@ const BlockButton = ({ format, icon }) => {
         toggleBlock(editor, format);
       }}
     >
-      <Icon>{icon}</Icon>
+      <Icon icon={icon} />
     </ToolButton>
   );
 };
@@ -350,7 +351,7 @@ const MarkButton = ({ format, icon }) => {
         toggleMark(editor, format);
       }}
     >
-      <Icon>{icon}</Icon>
+      <Icon icon={icon} />
     </ToolButton>
   );
 };

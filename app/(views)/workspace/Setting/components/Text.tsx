@@ -21,7 +21,7 @@ const Text = () => {
     onChangeState({ sections: newSections });
   };
   return (
-    <div>
+    <div className="p-4">
       <RichTextExample
         initialValue={initialValue}
         onUpdate={handleUpdateBoxContent}

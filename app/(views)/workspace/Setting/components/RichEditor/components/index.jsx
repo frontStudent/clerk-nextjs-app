@@ -2,6 +2,17 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import { cx, css } from "@emotion/css";
+import FormatBoldIcon from "@mui/icons-material/FormatBold";
+import FormatItalicIcon from "@mui/icons-material/FormatItalic";
+import FormatUnderlinedIcon from "@mui/icons-material/FormatUnderlined";
+
+import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+
+import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
+import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
+import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
+import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 
 export const ToolButton = React.forwardRef(
   ({ className, active, reversed, ...props }, ref) => (
@@ -72,20 +83,30 @@ export const EditorValue = React.forwardRef(
   }
 );
 
-export const Icon = React.forwardRef(({ className, ...props }, ref) => (
-  <span
-    {...props}
-    ref={ref}
-    className={cx(
-      "material-icons",
-      className,
-      css`
-        font-size: 18px;
-        vertical-align: text-bottom;
-      `
-    )}
-  />
-));
+export const Icon = ({icon}) => {
+  switch (icon) {
+    case "bold":
+      return <FormatBoldIcon />;
+    case "italic":
+      return <FormatItalicIcon />;
+    case "underlined":
+      return <FormatUnderlinedIcon />;
+    case "list_numbered":
+      return <FormatListNumberedIcon />;
+    case "list_bulleted":
+      return <FormatListBulletedIcon />;
+    case "align_left":
+      return <FormatAlignLeftIcon />;
+    case "align_center":
+      return <FormatAlignCenterIcon />;
+    case "align_right":
+      return <FormatAlignRightIcon />;
+    case "align_justify":
+      return <FormatAlignJustifyIcon />;
+    default:
+      return null;
+  }
+}
 
 export const Instruction = React.forwardRef(({ className, ...props }, ref) => (
   <div
