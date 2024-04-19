@@ -15,6 +15,7 @@ const BasicFunction = () => {
   const [sections, setSections] = useState<Section[]>([
     {
       id: "1",
+      type: "section",
       title: "shrek",
       titleStyle: "shrek",
       height: 100,
@@ -23,6 +24,7 @@ const BasicFunction = () => {
     },
     {
       id: "2",
+      type: "section",
       title: "fiona",
       titleStyle: "shrek",
       height: 100,
@@ -31,6 +33,7 @@ const BasicFunction = () => {
     },
     {
       id: "3",
+      type: "section",
       title: "fiona",
       titleStyle: "shrek",
       height: 100,
@@ -43,36 +46,45 @@ const BasicFunction = () => {
   const handleMutateBoxInSection: BoxMutateHelper = useCallback(
     (id, item, op) => {
       if (op === "add") {
-        setSections((prevCards) =>
-          prevCards.map((card) => {
-            return card.id === id
+        setSections((prev) =>
+          prev.map((sec) => {
+            return sec.id === id
               ? {
-                  ...card,
+                  ...sec,
                   childList: [
-                    ...card.childList,
+                    ...sec.childList,
                     { ...item, id: new Date().getTime().toString() },
                   ],
                 }
-              : card;
+              : sec;
           })
         );
         return;
       }
       if (op === "delete") {
-        setSections((prevCards) => prevCards.filter((card) => card.id !== id));
+        setSections((prev) =>
+          prev.map((sec) => {
+            return sec.id === id
+              ? {
+                  ...sec,
+                  childList: sec.childList.filter((box) => box.id !== item.id),
+                }
+              : sec;
+          })
+        );
         return;
       }
       if (op === "update") {
-        setSections((prevCards) =>
-          prevCards?.map((card) => {
-            return card?.id === id
+        setSections((prev) =>
+          prev?.map((sec) => {
+            return sec?.id === id
               ? {
-                  ...card,
-                  childList: card?.childList?.map((child) => {
+                  ...sec,
+                  childList: sec?.childList?.map((child) => {
                     return child?.id === item?.id ? item : child;
                   }),
                 }
-              : card;
+              : sec;
           })
         );
         return;
@@ -86,23 +98,20 @@ const BasicFunction = () => {
     (id, op) => {
       if (op === "add") {
         const newSections = [...sections];
-        newSections.splice(
-          sections.findIndex((sec) => sec.id === id),
-          0,
-          {
-            id: new Date().getTime().toString(),
-            title: "fiona",
-            titleStyle: "shrek",
-            height: 100,
-            width: 550,
-            childList: [],
-          }
-        );
+        newSections.splice(sections.findIndex((sec) => sec.id === id) + 1, 0, {
+          id: new Date().getTime().toString(),
+          type: "section",
+          title: "fiona",
+          titleStyle: "shrek",
+          height: 100,
+          width: 550,
+          childList: [],
+        });
         setSections(newSections);
         return;
       }
       if (op === "delete") {
-        setSections((prevCards) => prevCards.filter((card) => card.id !== id));
+        setSections((prev) => prev.filter((sec) => sec.id !== id));
         return;
       }
       if (op === "update") {

@@ -1,5 +1,6 @@
 export type DragItem = {
   id: string;
+  type: string;
   content: string;
   width?: number;
   height?: number;
@@ -14,6 +15,7 @@ export type BoxBaseInfo = {
 
 export type Box = {
   id: string;
+  type: string;
   content?: string;
   src?: string;
   initInfo: BoxBaseInfo;
@@ -23,6 +25,7 @@ export type Box = {
 // 简历模块
 export type Section = {
   id: string;
+  type: string;
   title: string;
   titleStyle: string;
   childList: Box[];

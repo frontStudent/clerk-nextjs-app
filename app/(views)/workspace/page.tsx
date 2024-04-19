@@ -13,6 +13,7 @@ import { StoreCtx } from "./context";
 const Workspace = () => {
   const [state, setState] = useState({
     selectField: {},
+    selectType: 'resume'
   });
 
   const store = {
@@ -30,7 +31,7 @@ const Workspace = () => {
     <div className="flex w-full h-[800px]">
       <StoreCtx.Provider value={store}>
         <DndProvider backend={HTML5Backend}>
-          <div className="w-1/5 h-full">
+          <div className="w-1/6 h-full">
             <DragArea />
           </div>
           <div className="flex-1 h-full bg-slate-100 min-w-[700px]">
@@ -39,7 +40,7 @@ const Workspace = () => {
             </div>
           </div>
         </DndProvider>
-        <div className="w-1/5 h-full">
+        <div className="w-1/4 h-full">
           <Setting />
         </div>
       </StoreCtx.Provider>

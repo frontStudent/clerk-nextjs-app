@@ -86,7 +86,7 @@ const Card = ({ item, onMutateBox, onMutateSection, onResize }: SectionProps) =>
           background: `${state.selectField?.id === id ? "#F2F8FE" : ""}`,
         }}
         onClick={() => {
-          console.log(item, "item");
+          console.log(item, "当前点击");
           onChangeState({ selectField: item });
         }}
       >
@@ -138,12 +138,28 @@ const Card = ({ item, onMutateBox, onMutateSection, onResize }: SectionProps) =>
             }}
             bounds={"parent"}
             style={{
-              border: "1px dashed gray",
               lineHeight: "30px",
               textAlign: "center",
               cursor: "move",
+              border: `${
+                state.selectField?.id === child.id
+                  ? "1px solid rgba(2,119,251,1)"
+                  : "1px solid #ccc"
+              }`,
+              background: `${
+                state.selectField?.id === child.id ? "#F2F8FE" : ""
+              }`,
+            }}
+            onClick={(e: SyntheticEvent) => {
+              e.stopPropagation();
+              console.log(child, "当前点击");
+              onChangeState({ selectField: child, selectType: 'box' });
             }}
           >
+              <CloseIcon
+                className="hover:cursor-pointer absolute top-1 right-1 text-sm"
+                onClick={() => onMutateBox(id, child, "delete")}
+              />
             {child.content}
           </Rnd>
         ))}

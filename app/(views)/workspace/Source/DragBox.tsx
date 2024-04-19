@@ -1,11 +1,11 @@
 import { useDrag } from "react-dnd";
 import { ItemTypes } from "./ItemTypes";
 import { DragItem } from "../types";
-const DragBox = ({ id, content }: DragItem) => {
+const DragBox = ({ id, content, type }: DragItem) => {
   const [, drag] = useDrag(
     () => ({
       type: ItemTypes.BOX,
-      item: { id, content, width: 150, height: 30 },
+      item: { id, content, type, width: 150, height: 30 },
       // collect: (monitor) => ({
       //   isDragging: monitor.isDragging(),
       // }),
