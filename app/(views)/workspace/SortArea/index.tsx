@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { ReactSortable } from "react-sortablejs";
 import { StoreCtx } from "../context";
 import Card from "./Card";
@@ -15,7 +15,6 @@ const BasicFunction = () => {
   // 增删改某个模块中的box信息，但并非增删改模块
   const handleMutateBoxInSection: BoxMutateHelper = (id, item, op) => {
     if (op === "add") {
-      console.log(state.sections, 'old sections')
       const newSections = state.sections.map((sec) => {
         return sec.id === id
           ? {
@@ -27,11 +26,11 @@ const BasicFunction = () => {
             }
           : sec;
       });
-      console.log(newSections, 'newSections')
       onChangeState({ sections: newSections });
       return;
     }
     if (op === "delete") {
+      console.log(state.sections, "old sections");
        const newSections = state.sections.map((sec) => {
           return sec.id === id
             ? {
@@ -44,6 +43,7 @@ const BasicFunction = () => {
       return;
     }
     if (op === "update") {
+      console.log(state.sections, "old sections");
       const newSections = state.sections.map((sec) => {
           return sec?.id === id
             ? {
@@ -57,7 +57,8 @@ const BasicFunction = () => {
       onChangeState({ sections: newSections });
       return;
     }
-  };
+  }
+
   // 增删改某个模块信息
   const handleMutateSection: SectionMutateHelper = (id, op) => {
     if (op === "add") {

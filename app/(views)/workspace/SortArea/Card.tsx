@@ -56,10 +56,10 @@ const Card = ({ item, onMutateBox, onMutateSection, onResize }: SectionProps) =>
           ...item,
           initInfo: { left, top, width: 150, height: 50 },
         };
-        onMutateBox(id, newItem, "add");
+        onMutateBox(id, newItem, "add")
       },
     }),
-    []
+    [state, onChangeState]
   );
   drop(ref);
 

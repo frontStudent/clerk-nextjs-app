@@ -47,11 +47,10 @@ const Workspace = () => {
 
   const store = {
     state,
-    onChangeState: (selectField: SelectedField) => {
-      console.log("selectField", selectField);
+    onChangeState: (obj: SelectedField) => {
       setState((preState) => ({
         ...preState,
-        ...selectField,
+        ...obj,
       }));
     },
   };
