@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useCallback,
-  useMemo,
-  useContext,
-} from "react";
+import React, { useState, useEffect } from "react";
 import { Dropdown } from "antd";
 import isHotkey from "is-hotkey";
 import { Editable, withReact, useSlate, Slate } from "slate-react";
@@ -15,9 +9,8 @@ import {
   Text,
   Element as SlateElement,
 } from "slate";
-import { withHistory } from "slate-history";
 
-import { ToolButton,Icon, Toolbar } from "./components";
+import { ToolButton, Icon, Toolbar } from "./components";
 import escapeHtml from "escape-html";
 
 const HOTKEYS = {
@@ -64,13 +57,7 @@ const RichTextExample = ({ initialValue, onUpdate }) => {
   }, [JSON.stringify(initialValue)]);
 
   const handleChange = (val) => {
-    //  onChangeParams({ richSourceData: val })
-    console.log(val, "val 11111111111111");
     onUpdate(val);
-    console.log(
-      val.map((item) => serialize(item)).join(""),
-      "val ============="
-    );
   };
   return (
     <Slate editor={editor} initialValue={initialValue} onChange={handleChange}>
@@ -100,7 +87,7 @@ const RichTextExample = ({ initialValue, onUpdate }) => {
         placeholder="Enter some rich text…"
         spellCheck
         autoFocus
-        style={{outline: 'none'}}
+        style={{ outline: "none" }}
         onKeyDown={(event) => {
           for (const hotkey in HOTKEYS) {
             if (isHotkey(hotkey, event)) {
