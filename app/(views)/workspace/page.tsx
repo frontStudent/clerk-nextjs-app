@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useState } from "react";
+import { useState } from "react";
 
 import SortArea from "./SortArea";
 import DragArea from "./Source/DragArea";
@@ -12,8 +12,37 @@ import { StoreCtx } from "./context";
 
 const Workspace = () => {
   const [state, setState] = useState({
+    sections: [
+      {
+        id: "1",
+        type: "section",
+        title: "shrek",
+        titleStyle: "shrek",
+        height: 100,
+        width: 550,
+        childList: [],
+      },
+      {
+        id: "2",
+        type: "section",
+        title: "fiona",
+        titleStyle: "shrek",
+        height: 100,
+        width: 550,
+        childList: [],
+      },
+      {
+        id: "3",
+        type: "section",
+        title: "fiona",
+        titleStyle: "shrek",
+        height: 100,
+        width: 550,
+        childList: [],
+      },
+    ],
     selectField: {},
-    selectType: 'resume'
+    selectType: "resume",
   });
 
   const store = {
