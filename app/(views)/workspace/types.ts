@@ -1,7 +1,10 @@
+import { Descendant } from "slate";
+
 export type DragItem = {
   id: string;
+  title: string;
   type: string;
-  content: string;
+  content: Descendant[];
   width?: number;
   height?: number;
 };
@@ -16,7 +19,7 @@ export type BoxBaseInfo = {
 export type Box = {
   id: string;
   type: string;
-  content?: string;
+  content: Descendant[];
   src?: string;
   initInfo: BoxBaseInfo;
   lastInfo?: BoxBaseInfo;

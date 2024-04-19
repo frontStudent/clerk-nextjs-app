@@ -15,6 +15,7 @@ const BasicFunction = () => {
   // 增删改某个模块中的box信息，但并非增删改模块
   const handleMutateBoxInSection: BoxMutateHelper = (id, item, op) => {
     if (op === "add") {
+      console.log(state.sections, 'old sections')
       const newSections = state.sections.map((sec) => {
         return sec.id === id
           ? {
@@ -26,6 +27,7 @@ const BasicFunction = () => {
             }
           : sec;
       });
+      console.log(newSections, 'newSections')
       onChangeState({ sections: newSections });
       return;
     }

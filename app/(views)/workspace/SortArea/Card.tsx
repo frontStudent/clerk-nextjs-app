@@ -15,7 +15,7 @@ import { StoreCtx } from "../context";
 import { DragItem, Box, SectionProps } from "../types";
 import { ItemTypes } from "../Source/ItemTypes";
 import RecTitle from "./RecTitle";
-
+import { serialize } from "../Setting/components/RichEditor";
 const Wrap = styled.div`
   position: relative;
   margin-bottom: 10px;
@@ -34,7 +34,6 @@ const Card = ({ item, onMutateBox, onMutateSection, onResize }: SectionProps) =>
   const { id, width, height, childList } = item;
 
   const { state, onChangeState } = useContext(StoreCtx);
-  console.log(state, "state");
   const minHeight = useMemo(() => {
     const list = childList.map((child: Box) =>
       child.lastInfo
@@ -153,14 +152,21 @@ const Card = ({ item, onMutateBox, onMutateSection, onResize }: SectionProps) =>
             onClick={(e: SyntheticEvent) => {
               e.stopPropagation();
               console.log(child, "当前点击");
-              onChangeState({ selectField: child, selectType: 'box' });
+              onChangeState({ selectField: child, selectType: "box" });
             }}
           >
-              <CloseIcon
-                className="hover:cursor-pointer absolute top-1 right-1 text-sm"
-                onClick={() => onMutateBox(id, child, "delete")}
-              />
-            {child.content}
+            <CloseIcon
+              className="hover:cursor-pointer absolute top-1 right-1 text-sm"
+              onClick={() => onMutateBox(id, child, "delete")}
+            />
+            <div
+              dangerouslySetInnerHTML={{
+                __html: child.content
+                  .map((item) => serialize(item))
+                  .join(""),
+              }}
+            ></div>
+            {}
           </Rnd>
         ))}
       </Wrap>
