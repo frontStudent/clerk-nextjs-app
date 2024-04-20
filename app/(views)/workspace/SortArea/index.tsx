@@ -30,7 +30,6 @@ const BasicFunction = () => {
       return;
     }
     if (op === "delete") {
-      console.log(state.sections, "old sections");
        const newSections = state.sections.map((sec) => {
           return sec.id === id
             ? {
@@ -43,7 +42,6 @@ const BasicFunction = () => {
       return;
     }
     if (op === "update") {
-      console.log(state.sections, "old sections");
       const newSections = state.sections.map((sec) => {
           return sec?.id === id
             ? {

@@ -30,6 +30,7 @@
     "classnames": "^2.3.2",
     "clsx": "^2.1.0",
     "escape-html": "^1.0.3",
+    "html-react-parser": "^5.1.10",
     "is-hotkey": "^0.2.0",
     "lucide-react": "^0.371.0",
     "next": "13.4.2",

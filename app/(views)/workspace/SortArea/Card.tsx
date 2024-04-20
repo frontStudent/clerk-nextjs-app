@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useRef, useMemo, useContext, SyntheticEvent } from "react";
+import React, { useRef, useMemo, useContext, SyntheticEvent, useEffect } from "react";
 import { Space } from "antd";
 import { useDrop, XYCoord } from "react-dnd";
+import parse from "html-react-parser";
+
 import styled from "styled-components";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
@@ -30,7 +32,12 @@ const IconWrap = styled(Space)`
   font-size: 16px;
 `;
 
-const Card = ({ item, onMutateBox, onMutateSection, onResize }: SectionProps) => {
+const Card = ({
+  item,
+  onMutateBox,
+  onMutateSection,
+  onResize,
+}: SectionProps) => {
   const { id, width, height, childList } = item;
 
   const { state, onChangeState } = useContext(StoreCtx);
@@ -43,7 +50,6 @@ const Card = ({ item, onMutateBox, onMutateSection, onResize }: SectionProps) =>
     return Math.max(...list);
   }, [childList]);
   const ref = useRef<HTMLDivElement>(null);
-
   const [, drop] = useDrop(
     () => ({
       accept: [ItemTypes.BOX],
@@ -56,13 +62,12 @@ const Card = ({ item, onMutateBox, onMutateSection, onResize }: SectionProps) =>
           ...item,
           initInfo: { left, top, width: 150, height: 50 },
         };
-        onMutateBox(id, newItem, "add")
+        onMutateBox(id, newItem, "add");
       },
     }),
     [state, onChangeState]
   );
   drop(ref);
-
   return (
     <Resizable
       width={width}
@@ -141,12 +146,10 @@ const Card = ({ item, onMutateBox, onMutateSection, onResize }: SectionProps) =>
               textAlign: "center",
               cursor: "move",
               border: `${
-                state.selectField?.id === child.id
-                  ? "1px solid rgba(2,119,251,1)"
-                  : "1px solid #ccc"
+                state.selectField?.id === child.id ? "1px dashed #ccc" : ""
               }`,
               background: `${
-                state.selectField?.id === child.id ? "#F2F8FE" : ""
+                state.selectField?.id === child.id ? "#fafafa" : ""
               }`,
             }}
             onClick={(e: SyntheticEvent) => {
@@ -155,17 +158,19 @@ const Card = ({ item, onMutateBox, onMutateSection, onResize }: SectionProps) =>
               onChangeState({ selectField: child, selectType: "box" });
             }}
           >
-            <CloseIcon
-              className="hover:cursor-pointer absolute top-1 right-1 text-sm"
-              onClick={() => onMutateBox(id, child, "delete")}
-            />
-            <div
+            {state.selectField?.id === child.id && (
+              <CloseIcon
+                className="hover:cursor-pointer absolute top-1 right-1 text-sm"
+                onClick={() => onMutateBox(id, child, "delete")}
+              />
+            )}
+            {parse(child.content.map((item) => serialize(item)).join(""))}
+            {/* <div
               dangerouslySetInnerHTML={{
-                __html: child.content
-                  .map((item) => serialize(item))
-                  .join(""),
+                __html: child.content.map((item) => serialize(item)).join(""),
               }}
-            ></div>
+              className="absolute left-1 top-1 text-sm"
+            ></div> */}
           </Rnd>
         ))}
       </Wrap>
